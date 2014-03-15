@@ -22,7 +22,7 @@
   (sql/with-connection db-spec
     (sql/create-table
       :users
-      [:id "varchar(20) PRIMARY KEY"]
+      [:id "BIGINT auto_increment PRIMARY KEY"]
       [:first_name "varchar(30)"]
       [:last_name "varchar(30)"]
       [:initials "varchar(6)"])))
@@ -32,8 +32,8 @@
   (sql/with-connection db-spec
     (sql/create-table
       :cakedays
-      [:id "varchar(20) PRIMARY KEY"]
-      [:user "varchar(20) FOREIGN KEY users"]
+      [:id "BIGINT auto_increment PRIMARY KEY"]
+      [:user "BIGINT"]
       [:date "DATE"]
       [:description "varchar(500)"])))
 

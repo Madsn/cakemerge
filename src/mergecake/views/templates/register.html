@@ -8,9 +8,9 @@
 <p>Successfully registered cakedays will will result in an e-mail being sent out to your colleagues at 10:00 on the date chosen. This is to ensure that you follow through with your commitment.</p>
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="selectbasic">Select your initials</label>
+  <label class="col-md-4 control-label" for="user">Select your initials</label>
   <div class="col-md-2">
-    <select id="user-id" name="user-id" class="form-control">
+    <select id="user-id" name="user" class="form-control">
       {% for user in users %}
         <option value="{{user.id}}">{{user.initials}}</option>
       {% endfor %}

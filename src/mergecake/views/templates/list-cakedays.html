@@ -1,0 +1,8 @@
+{% extends "mergecake/views/templates/base.html" %}
+{% block content %}
+{{message}}
+{% for day in cakedays %}
+<p>{{day.first_name}} {{day.last_name}} -- {{day.initials}}<br/>
+{{day.date}} {{day.description}} <a href="/cakedays/delete/{{day.id}}">Delete</a></p>
+{% endfor %}
+{% endblock %}

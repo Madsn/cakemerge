@@ -1,4 +1,4 @@
-(ns mergecake.core  
+(ns mergecake.core
   (:require
     [mergecake.handler :refer [app]]
     [ring.middleware.reload :as reload]

@@ -7,14 +7,17 @@
 
 (defentity users)
 
-(defn create-user [user]
+(defn create-user [{:keys [first_name last_name initials]}]
+  (let [user {:first_name first_name
+             :last_name last_name
+             :initials initials}]
   (insert users
-          (values user)))
+          (values user))))
 
-(defn update-user [id first-name last-name initials]
+(defn update-user [id first_name last_name initials]
   (update users
-  (set-fields {:first_name first-name
-               :last_name last-name
+  (set-fields {:first_name first_name
+               :last_name last_name
                :initials initials})
   (where {:id id})))
 
@@ -23,11 +26,16 @@
                  (where {:id id})
                  (limit 1))))
 
+(defn delete-user [id]
+  (delete users
+          (where {:id id})))
+
 (defn get-all-users []
   (select users))
 
 
-(defentity cakedays)
+(defentity cakedays
+  (belongs-to users {:fk :user}))
 
 (defn create-cakeday [cakeday]
   (insert cakedays
@@ -44,3 +52,6 @@
   (first (select cakedays
                  (where {:id id})
                  (limit 1))))
+
+(defn get-all-cakedays []
+  (select cakedays (with users)))
