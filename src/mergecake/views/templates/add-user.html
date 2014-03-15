@@ -1,0 +1,47 @@
+{% extends "mergecake/views/templates/base.html" %}
+{% block content %}
+<form class="form-horizontal" action="{{servlet-context}}/add-user" method="POST">
+<fieldset>
+
+<legend>Add a new user</legend>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="first-name">First name</label>
+  <div class="col-md-2">
+    <input type="text" class="form-control" id="first-name" name="first-name"/>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Which day will you be bringing a treat?</label>
+  <div class="col-md-2">
+    <input type="text" class="form-control" id="date" name="date" value="02-16-2012"></input>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textarea">Describe what you will be bringing (will be included in the e-mail to your project team)</label>
+  <div class="col-md-4">
+    <textarea class="form-control" id="description" name="description"></textarea>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-md-4 pull-right col-md-pull-1">
+    <button type="submit" id="submitbutton" name="submitbutton" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+{{message}}
+{% style "/css/datepicker.css" %}
+{% script "/js/bootstrap-datepicker.js" %}
+<script type="text/javascript">
+$(function(){
+  $('#date').datepicker({
+    format: 'dd-mm-yyyy'
+  });
+});
+</script>
+{% endblock %}
