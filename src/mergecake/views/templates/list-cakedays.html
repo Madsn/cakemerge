@@ -2,7 +2,8 @@
 {% block content %}
 {{message}}
 {% for day in cakedays %}
-<p>{{day.name}} -- {{day.initials}}<br/>
+<p>{{day.projectname}}<br/>
+{{day.name}} -- {{day.initials}}<br/>
 {{day.date}} {{day.description}} <a href="/cakedays/delete/{{day.id}}">Delete</a></p>
 {% endfor %}
 {% endblock %}

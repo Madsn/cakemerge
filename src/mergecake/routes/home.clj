@@ -9,37 +9,56 @@
   (schema/create-tables))
 
 (defn register-page []
-  (layout/render "register.html" {:users (db/get-all-users)}))
+  (layout/render "register.html"
+                 {:users (db/get-all-users)}))
 
 (defn add-user-page []
-  (layout/render "add-user.html"))
+  (layout/render "add-user.html"
+                 {:projects (db/get-all-projects)}))
 
 (defn list-users-page []
-  (layout/render "list-users.html" {:users (db/get-all-users)}))
+  (layout/render "list-users.html"
+                 {:users (db/get-all-users)}))
 
 (defn list-cakedays-page []
-  (layout/render "list-cakedays.html" {:cakedays (db/get-all-cakedays)}))
+  (layout/render "list-cakedays.html"
+                 {:cakedays (db/get-all-cakedays)}))
 
 (defn render-register-cakeday [message]
-  (layout/render "register.html" {:message message, :users (db/get-all-users)}))
+  (layout/render "register.html"
+                 {:message message,
+                  :users (db/get-all-users),
+                  :projects (db/get-all-projects)}))
 
-(defn render-cakeday-receipt [cakeday]
-  (layout/render "receipt.html" {:cakeday cakeday}))
+(defn render-cakeday-receipt [params]
+  (layout/render "receipt.html" {:params params}))
 
 (defn parse-date [date]
   (.parse (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
 
-(defn submit-cakeday [{:keys [user date description]}]
-  (if (db/cakeday-taken? (parse-date date))
+(defn submit-cakeday [params]
+  (let [date (parse-date (get params :date))
+        proj (get params :proj)
+        description (get params :description)
+        userid (get params :user)
+        user (db/get-user userid)
+        projectname (get (db/get-project proj) :projectname)]
+  (if (db/cakeday-taken? date proj)
     (render-register-cakeday "Sorry, there was a conflict. Choose another day.")
     (do
-      (db/create-cakeday {:user user :date (parse-date date) :description description})
-      (render-cakeday-receipt (db/get-cakeday-by-date (parse-date date))))))
+      (let [new-cakeday {:userid userid
+                         :date date
+                         :description description
+                         :projectid proj}]
+        (db/create-cakeday new-cakeday)
+        (render-cakeday-receipt {:user user
+                                 :cakeday new-cakeday
+                                 :projectname projectname}))))))
 
 (defn submit-add-user [user]
   (do
     (db/create-user user)
-    (layout/render "add-user.html" {:message "TEST"})))
+    (list-users-page)))
 
 (defn delete-user [id]
   (do
@@ -51,13 +70,37 @@
     (db/delete-cakeday id)
     (list-cakedays-page)))
 
+(defn add-project-page []
+  (layout/render "add-project.html"))
+
+(defn list-projects-page []
+  (layout/render "list-projects.html"
+                 {:projects (db/get-all-projects)}))
+
+(defn submit-add-project [params]
+  (do
+    (db/create-project params)
+    (list-projects-page)))
+
+(defn delete-project [id]
+  (do
+    (db/delete-project id)
+    (list-projects-page)))
+
 (defroutes home-routes
-  (GET "/" [] (register-page))
+  (GET "/" [] (render-register-cakeday ""))
   (POST "/submit-cakeday" {params :params} (submit-cakeday params))
+  (GET "/list-cakedays" [] (list-cakedays-page))
+  (GET "/cakedays/delete/:id" [id] (delete-cakeday id))
+
   (GET "/add-user" [] (add-user-page))
   (POST "/add-user" {params :params} (submit-add-user params))
   (GET "/list-users" [] (list-users-page))
-  (GET "/list-cakedays" [] (list-cakedays-page))
-  (GET "/create-tables" [] (trigger-table-creation))
   (GET "/users/delete/:id" [id] (delete-user id))
-  (GET "/cakedays/delete/:id" [id] (delete-cakeday id)))
+
+  (GET "/add-project" [] (add-project-page))
+  (POST "/add-project" {params :params} (submit-add-project params))
+  (GET "/list-projects" [] (list-projects-page))
+  (GET "/projects/delete/:id" [id] (delete-project id))
+
+  (GET "/create-tables" [] (trigger-table-creation)))

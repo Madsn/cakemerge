@@ -23,6 +23,7 @@
     (sql/create-table
       :users
       [:id "BIGINT auto_increment PRIMARY KEY"]
+      [:projectid "BIGINT"]
       [:name "varchar(30)"]
       [:initials "varchar(6)"])))
 
@@ -32,12 +33,22 @@
     (sql/create-table
       :cakedays
       [:id "BIGINT auto_increment PRIMARY KEY"]
-      [:user "BIGINT"]
+      [:userid "BIGINT"]
+      [:projectid "BIGINT"]
       [:date "DATE"]
       [:description "varchar(500)"])))
+
+(defn create-projects-table
+  []
+  (sql/with-connection db-spec
+    (sql/create-table
+      :projects
+      [:id "BIGINT auto_increment PRIMARY KEY"]
+      [:projectname "varchar(30)"])))
 
 (defn create-tables
   "creates the database tables used by the application"
   []
+  (create-projects-table)
   (create-users-table)
   (create-cakedays-table))

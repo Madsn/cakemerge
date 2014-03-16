@@ -1,13 +1,24 @@
 {% extends "mergecake/views/templates/cakeday-base.html" %}
 {% block cakeday-content %}
-<h1>Register for a cakeday</h1>
+<h1>Register a cakeday</h1>
 <form class="form-horizontal" action="{{servlet-context}}/submit-cakeday" method="POST">
 <fieldset>
 
 <div class="form-group">
+  <label class="col-md-4 control-label" for="project">Select project</label>
+  <div class="col-md-2">
+    <select id="proj" name="proj" class="form-control">
+      {% for proj in projects %}
+        <option value="{{proj.id}}">{{proj.projectname}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
   <label class="col-md-4 control-label" for="user">Select your initials</label>
   <div class="col-md-2">
-    <select id="user-id" name="user" class="form-control">
+    <select id="user" name="user" class="form-control">
       {% for user in users %}
         <option value="{{user.id}}">{{user.initials}}</option>
       {% endfor %}

@@ -1,0 +1,24 @@
+{% extends "mergecake/views/templates/base.html" %}
+{% block content %}
+<form class="form-horizontal" action="{{servlet-context}}/add-project" method="POST">
+<fieldset>
+
+<legend>Add a new project</legend>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="uname">Project name</label>
+  <div class="col-md-4">
+    <input type="text" class="form-control" id="pname" name="pname"/>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-md-4 pull-right col-md-pull-1">
+    <button type="submit" id="submitbutton" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+{{message}}
+{% endblock %}
