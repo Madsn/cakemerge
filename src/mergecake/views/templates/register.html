@@ -1,11 +1,8 @@
-{% extends "mergecake/views/templates/base.html" %}
-{% block content %}
+{% extends "mergecake/views/templates/cakeday-base.html" %}
+{% block cakeday-content %}
+<h1>Register for a cakeday</h1>
 <form class="form-horizontal" action="{{servlet-context}}/submit-cakeday" method="POST">
 <fieldset>
-
-<legend>Register a cakeday</legend>
-<p>When registering to bring cake or another treat, you will be informed on submitting if there is a conflict with a colleague who has already committed to bringing cake on the requested date. You will then have to choose another day.</p>
-<p>Successfully registered cakedays will will result in an e-mail being sent out to your colleagues at 10:00 on the date chosen. This is to ensure that you follow through with your commitment.</p>
 
 <div class="form-group">
   <label class="col-md-4 control-label" for="user">Select your initials</label>
@@ -26,7 +23,7 @@
 </div>
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="textarea">Describe what you will be bringing (will be included in the e-mail to your project team)</label>
+  <label class="col-md-4 control-label" for="textarea">Comment (will be included in e-mail)</label>
   <div class="col-md-4">
     <textarea class="form-control" id="description" name="description"></textarea>
   </div>

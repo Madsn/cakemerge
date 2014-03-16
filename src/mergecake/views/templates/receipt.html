@@ -1,0 +1,34 @@
+{% extends "mergecake/views/templates/cakeday-base.html" %}
+{% block cakeday-content %}
+<style>
+.cakeday-label p {
+  font-weight: bold;
+}
+</style>
+<h1>Receipt</h1>
+<p>Your request was accepted.</p>
+<div class="row">
+  <div class="col-md-2 cakeday-label">
+    <p>User:<p>
+  </div>
+  <div class="col-md-4">
+    <p>{{cakeday.initials}} - {{cakeday.name}}</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 cakeday-label">
+    <p>Date:<p>
+  </div>
+  <div class="col-md-4">
+    <p>{{cakeday.date}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 cakeday-label">
+    <p>Comment:<p>
+  </div>
+  <div class="col-md-4">
+    <p>{{cakeday.description}}
+  </div>
+</div>
+{% endblock %}

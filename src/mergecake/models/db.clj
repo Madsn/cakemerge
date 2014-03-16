@@ -17,7 +17,7 @@
   (update users
   (set-fields {:name uname
                :initials initials})
-  (where {:id id})))
+    (where {:id id})))
 
 (defn get-user [id]
   (first (select users
@@ -25,8 +25,11 @@
                  (limit 1))))
 
 (defn delete-user [id]
-  (delete users
-          (where {:id id})))
+  (do
+    (delete cakedays
+            (where {:user id}))
+    (delete users
+          (where {:id id}))))
 
 (defn get-all-users []
   (select users))
@@ -50,6 +53,12 @@
   (first (select cakedays
                  (where {:id id})
                  (limit 1))))
+
+(defn get-cakeday-by-date [date]
+  (first (select cakedays
+    (with users)
+    (where {:date date})
+    (limit 1))))
 
 (defn get-all-cakedays []
   (select cakedays (with users)))

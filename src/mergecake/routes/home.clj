@@ -30,9 +30,8 @@
 (defn render-register-cakeday [message]
   (layout/render "register.html" {:message message, :users (db/get-all-users)}))
 
-(defn build-confirm [user date description]
-  (str (get (db/get-user user) :name) " will bring cake or some other treat on "
-       date ". An e-mail will be sent at 10:00 with the following message: " description))
+(defn render-cakeday-receipt [cakeday]
+  (layout/render "receipt.html" {:cakeday cakeday}))
 
 (defn parse-date [date]
   (.parse (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
@@ -42,7 +41,7 @@
     (render-register-cakeday "Sorry, there was a conflict. Choose another day.")
     (do
       (db/create-cakeday {:user user :date (parse-date date) :description description})
-      (render-register-cakeday (build-confirm user date description)))))
+      (render-cakeday-receipt (db/get-cakeday-by-date (parse-date date))))))
 
 (defn submit-add-user [user]
   (do
