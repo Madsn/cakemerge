@@ -8,13 +8,8 @@
 (defn trigger-table-creation []
   (schema/create-tables))
 
-(defn register-page []
-  (layout/render "register.html"
-                 {:users (db/get-all-users)}))
-
 (defn add-user-page []
-  (layout/render "add-user.html"
-                 {:projects (db/get-all-projects)}))
+  (layout/render "add-user.html"))
 
 (defn list-users-page []
   (layout/render "list-users.html"
@@ -24,11 +19,15 @@
   (layout/render "list-cakedays.html"
                  {:cakedays (db/get-all-cakedays)}))
 
-(defn render-register-cakeday [message]
-  (layout/render "register.html"
+(defn render-register-cakeday
+  ([] (render-register-cakeday "" []))
+  ([message] (render-register-cakeday message []))
+  ([message params]
+    (layout/render "register.html"
                  {:message message,
                   :users (db/get-all-users),
-                  :projects (db/get-all-projects)}))
+                  :projects (db/get-all-projects)
+                  :params params})))
 
 (defn render-cakeday-receipt [params]
   (layout/render "receipt.html" {:params params}))
@@ -44,7 +43,7 @@
         user (db/get-user userid)
         projectname (get (db/get-project proj) :projectname)]
   (if (db/cakeday-taken? date proj)
-    (render-register-cakeday "Sorry, there was a conflict. Choose another day.")
+    (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
     (do
       (let [new-cakeday {:userid userid
                          :date date
@@ -88,7 +87,7 @@
     (list-projects-page)))
 
 (defroutes home-routes
-  (GET "/" [] (render-register-cakeday ""))
+  (GET "/" [] (render-register-cakeday))
   (POST "/submit-cakeday" {params :params} (submit-cakeday params))
   (GET "/list-cakedays" [] (list-cakedays-page))
   (GET "/cakedays/delete/:id" [id] (delete-cakeday id))
