@@ -31,7 +31,7 @@
   (layout/render "register.html" {:message message, :users (db/get-all-users)}))
 
 (defn build-confirm [user date description]
-  (str (get (db/get-user user) :first_name) " will bring cake or some other treat on "
+  (str (get (db/get-user user) :name) " will bring cake or some other treat on "
        date ". An e-mail will be sent at 10:00 with the following message: " description))
 
 (defn parse-date [date]

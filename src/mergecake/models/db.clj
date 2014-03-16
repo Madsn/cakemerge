@@ -7,17 +7,15 @@
 
 (defentity users)
 
-(defn create-user [{:keys [first_name last_name initials]}]
-  (let [user {:first_name first_name
-             :last_name last_name
+(defn create-user [{:keys [uname initials]}]
+  (let [user {:name uname
              :initials initials}]
   (insert users
           (values user))))
 
-(defn update-user [id first_name last_name initials]
+(defn update-user [id uname initials]
   (update users
-  (set-fields {:first_name first_name
-               :last_name last_name
+  (set-fields {:name uname
                :initials initials})
   (where {:id id})))
 

@@ -2,6 +2,6 @@
 {% block content %}
 {{message}}
 {% for user in users %}
-<p>{{user.first_name}} {{user.last_name}} -- {{user.initials}} <a href="/users/delete/{{user.id}}">Delete</a></p>
+<p>{{user.name}} -- {{user.initials}} <a href="/users/delete/{{user.id}}">Delete</a></p>
 {% endfor %}
 {% endblock %}
