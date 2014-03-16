@@ -27,13 +27,22 @@
 (defn list-cakedays-page []
   (layout/render "list-cakedays.html" {:cakedays (db/get-all-cakedays)}))
 
+(defn render-register-cakeday [message]
+  (layout/render "register.html" {:message message, :users (db/get-all-users)}))
+
+(defn build-confirm [user date description]
+  (str (get (db/get-user user) :first_name) " will bring cake or some other treat on "
+       date ". An e-mail will be sent at 10:00 with the following message: " description))
+
+(defn parse-date [date]
+  (.parse (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
+
 (defn submit-cakeday [{:keys [user date description]}]
-  (do
-    (db/create-cakeday {:user user :date (.parse
-      (java.text.SimpleDateFormat. "dd-MM-yyyy") date) :description description})
-    (layout/render "register.html"
-                 {:message (get (db/get-user user) :initials)
-                  :users (db/get-all-users)})))
+  (if (db/cakeday-taken? (parse-date date))
+    (render-register-cakeday "Sorry, there was a conflict. Choose another day.")
+    (do
+      (db/create-cakeday {:user user :date (parse-date date) :description description})
+      (render-register-cakeday (build-confirm user date description)))))
 
 (defn submit-add-user [user]
   (do
@@ -45,6 +54,11 @@
     (db/delete-user id)
     (list-users-page)))
 
+(defn delete-cakeday [id]
+  (do
+    (db/delete-cakeday id)
+    (list-cakedays-page)))
+
 (defroutes home-routes
   (GET "/" [] (home-page))
   (GET "/about" [] (about-page))
@@ -55,4 +69,5 @@
   (GET "/list-users" [] (list-users-page))
   (GET "/list-cakedays" [] (list-cakedays-page))
   (GET "/create-tables" [] (trigger-table-creation))
-  (GET "/users/delete/:id" [id] (delete-user id)))
+  (GET "/users/delete/:id" [id] (delete-user id))
+  (GET "/cakedays/delete/:id" [id] (delete-cakeday id)))

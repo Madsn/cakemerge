@@ -55,3 +55,10 @@
 
 (defn get-all-cakedays []
   (select cakedays (with users)))
+
+(defn cakeday-taken? [date]
+  (not (empty? (select cakedays (where {:date date})))))
+
+(defn delete-cakeday [id]
+  (delete cakedays
+          (where {:id id})))
