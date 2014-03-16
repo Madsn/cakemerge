@@ -5,15 +5,8 @@
             [mergecake.models.db :as db]
             [mergecake.models.schema :as schema]))
 
-(defn home-page []
-    (layout/render
-      "home.html" {:content (util/md->html "/md/docs.md")}))
-
 (defn trigger-table-creation []
   (schema/create-tables))
-
-(defn about-page []
-  (layout/render "about.html"))
 
 (defn register-page []
   (layout/render "register.html" {:users (db/get-all-users)}))
@@ -59,9 +52,7 @@
     (list-cakedays-page)))
 
 (defroutes home-routes
-  (GET "/" [] (home-page))
-  (GET "/about" [] (about-page))
-  (GET "/register" [] (register-page))
+  (GET "/" [] (register-page))
   (POST "/submit-cakeday" {params :params} (submit-cakeday params))
   (GET "/add-user" [] (add-user-page))
   (POST "/add-user" {params :params} (submit-add-user params))

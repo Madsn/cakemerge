@@ -7,6 +7,9 @@
 
 (defentity users)
 
+(defentity cakedays
+  (belongs-to users {:fk :user}))
+
 (defn create-user [{:keys [uname initials]}]
   (let [user {:name uname
              :initials initials}]
@@ -33,10 +36,6 @@
 
 (defn get-all-users []
   (select users))
-
-
-(defentity cakedays
-  (belongs-to users {:fk :user}))
 
 (defn create-cakeday [cakeday]
   (insert cakedays
