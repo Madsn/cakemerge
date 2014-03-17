@@ -9,3 +9,8 @@ pom.xml
 /.env
 *.log
 db/
+/bin
+.idea/
+.classpath
+.project
+mergecake.iml

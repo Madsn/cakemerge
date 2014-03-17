@@ -1,31 +1,31 @@
-{% extends "mergecake/views/templates/base.html" %}
-{% block content %}
-<form class="form-horizontal" action="{{servlet-context}}/add-user" method="POST">
-<fieldset>
+{% extends "mergecake/views/templates/base.html" %} {% block content %}
+<form class="form-horizontal" action="{{servlet-context}}/add-user"
+  method="POST">
+  <fieldset>
 
-<legend>Add a new user</legend>
+    <legend>Add a new user</legend>
 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="uname">Name</label>
-  <div class="col-md-4">
-    <input type="text" class="form-control" id="uname" name="uname"/>
-  </div>
-</div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="uname">Name</label>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="uname" name="uname" />
+      </div>
+    </div>
 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="initials">Initials</label>
-  <div class="col-md-2">
-    <input type="text" class="form-control" id="initials" name="initials"></input>
-  </div>
-</div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="initials">Initials</label>
+      <div class="col-md-2">
+        <input type="text" class="form-control" id="initials"
+          name="initials"></input>
+      </div>
+    </div>
 
-<div class="form-group">
-  <div class="col-md-4 pull-right col-md-pull-1">
-    <button type="submit" id="submitbutton" class="btn btn-primary">Submit</button>
-  </div>
-</div>
+    <div class="form-group">
+      <div class="col-md-4 pull-right col-md-pull-1">
+        <button type="submit" id="submitbutton" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
 
-</fieldset>
+  </fieldset>
 </form>
-{{message}}
-{% endblock %}
+{{message}} {% endblock %}

@@ -24,10 +24,10 @@
   ([message] (render-register-cakeday message []))
   ([message params]
     (layout/render "register.html"
-                 {:message message,
-                  :users (db/get-all-users),
-                  :projects (db/get-all-projects)
-                  :params params})))
+                   {:message message,
+                    :users (db/get-all-users),
+                    :projects (db/get-all-projects)
+                    :params params})))
 
 (defn render-cakeday-receipt [params]
   (layout/render "receipt.html" {:params params}))
@@ -42,17 +42,17 @@
         userid (get params :user)
         user (db/get-user userid)
         projectname (get (db/get-project proj) :projectname)]
-  (if (db/cakeday-taken? date proj)
-    (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
-    (do
-      (let [new-cakeday {:userid userid
-                         :date date
-                         :description description
-                         :projectid proj}]
-        (db/create-cakeday new-cakeday)
-        (render-cakeday-receipt {:user user
-                                 :cakeday new-cakeday
-                                 :projectname projectname}))))))
+    (if (db/cakeday-taken? date proj)
+      (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
+      (do
+        (let [new-cakeday {:userid userid
+                           :date date
+                           :description description
+                           :projectid proj}]
+          (db/create-cakeday new-cakeday)
+          (render-cakeday-receipt {:user user
+                                   :cakeday new-cakeday
+                                   :projectname projectname}))))))
 
 (defn submit-add-user [user]
   (do
@@ -91,15 +91,15 @@
   (POST "/submit-cakeday" {params :params} (submit-cakeday params))
   (GET "/list-cakedays" [] (list-cakedays-page))
   (GET "/cakedays/delete/:id" [id] (delete-cakeday id))
-
+  
   (GET "/add-user" [] (add-user-page))
   (POST "/add-user" {params :params} (submit-add-user params))
   (GET "/list-users" [] (list-users-page))
   (GET "/users/delete/:id" [id] (delete-user id))
-
+  
   (GET "/add-project" [] (add-project-page))
   (POST "/add-project" {params :params} (submit-add-project params))
   (GET "/list-projects" [] (list-projects-page))
   (GET "/projects/delete/:id" [id] (delete-project id))
-
+  
   (GET "/create-tables" [] (trigger-table-creation)))

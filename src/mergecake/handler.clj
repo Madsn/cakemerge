@@ -27,14 +27,14 @@
      :async? false ; should be always false for rotor
      :max-message-per-msecs nil
      :fn rotor/appender-fn})
-
+  
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "mergecake.log" :max-size (* 512 1024) :backlog 10})
-
+  
   ;;initialize the database if needed
   (if-not (schema/initialized?) (schema/create-tables))
-
+  
   (if (env :dev) (parser/cache-off!))
   (timbre/info "mergecake started successfully"))
 

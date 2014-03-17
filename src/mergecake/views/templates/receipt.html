@@ -1,10 +1,11 @@
-{% extends "mergecake/views/templates/cakeday-base.html" %}
+{% extends "mergecake/views/templates/cakeday-base.html" %} 
 {% block cakeday-content %}
 <h1>Receipt</h1>
 <p>Your request was accepted.</p>
 <div class="row">
   <div class="col-md-2 control-label">
-    <p>Employee:<p>
+    <p>Employee:
+    <p>
   </div>
   <div class="col-md-4">
     <p>{{params.user.initials}} - {{params.user.name}}</p>
@@ -12,7 +13,8 @@
 </div>
 <div class="row">
   <div class="col-md-2 control-label">
-    <p>Project:<p>
+    <p>Project:
+    <p>
   </div>
   <div class="col-md-4">
     <p>{{params.projectname}}</p>
@@ -20,7 +22,8 @@
 </div>
 <div class="row">
   <div class="col-md-2 control-label">
-    <p>Date:<p>
+    <p>Date:
+    <p>
   </div>
   <div class="col-md-4">
     <p>{{params.cakeday.date}}
@@ -28,7 +31,8 @@
 </div>
 <div class="row">
   <div class="col-md-2 control-label">
-    <p>Comment:<p>
+    <p>Comment:
+    <p>
   </div>
   <div class="col-md-4">
     <p>{{params.cakeday.description}}

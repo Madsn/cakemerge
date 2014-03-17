@@ -20,13 +20,13 @@
   (if (empty?
         (select projects
                 (where {:projectname pname})))
-  (insert projects
-          (values {:projectname pname}))))
+    (insert projects
+            (values {:projectname pname}))))
 
 (defn update-project [id pname]
   (update projects
-  (set-fields {:projectname pname})
-    (where {:id id})))
+          (set-fields {:projectname pname})
+          (where {:id id})))
 
 (defn get-project [id]
   (first (select projects
@@ -49,15 +49,15 @@
   (let [user {:name uname
               :projectid proj
               :initials initials}]
-  (insert users
-          (values user))))
+    (insert users
+            (values user))))
 
 (defn update-user [id uname initials proj]
   (update users
-  (set-fields {:name uname
-               :projectid proj
-               :initials initials})
-    (where {:id id})))
+          (set-fields {:name uname
+                       :projectid proj
+                       :initials initials})
+          (where {:id id})))
 
 (defn get-user [id]
   (first (select users
@@ -69,7 +69,7 @@
     (delete cakedays
             (where {:userid id}))
     (delete users
-          (where {:id id}))))
+            (where {:id id}))))
 
 (defn get-all-users []
   (select users))
@@ -82,11 +82,11 @@
 
 (defn update-cakeday [id user date description proj]
   (update users
-  (set-fields {:userid user
-               :date date
-               :projectid proj
-               :description description})
-  (where {:id id})))
+          (set-fields {:userid user
+                       :date date
+                       :projectid proj
+                       :description description})
+          (where {:id id})))
 
 (defn get-cakeday [id]
   (first (select cakedays
@@ -95,13 +95,13 @@
 
 (defn get-cakeday-by-date [date]
   (first (select cakedays
-    (with users)
-    (where {:date date})
-    (limit 1))))
+                 (with users)
+                 (where {:date date})
+                 (limit 1))))
 
 (defn get-all-cakedays []
   (select cakedays (with users)
-                   (with projects)))
+          (with projects)))
 
 (defn cakeday-taken? [date proj]
   (not (empty? (select cakedays

@@ -1,7 +1,7 @@
 {% extends "mergecake/views/templates/base.html" %}
 {% block content %}
-{{message}}
-{% for proj in projects %}
-<p>{{proj.projectname}} <a href="/projects/delete/{{proj.id}}">Delete</a></p>
-{% endfor %}
+  {{message}}
+  {% for proj in projects %}
+    <p>{{proj.projectname}} <a href="/projects/delete/{{proj.id}}">Delete</a></p>
+  {% endfor %}
 {% endblock %}
