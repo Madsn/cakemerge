@@ -11,7 +11,11 @@
       <div class="col-md-2">
         <select id="proj" name="proj" class="form-control"> 
           {% for proj in projects %}
-            <option value="{{proj.id}}">{{proj.projectname}}</option> 
+            {% ifequal params.proj proj.id %}
+              <option value="{{proj.id}}" selected>{{proj.projectname}}</option> 
+            {% else %}
+              <option value="{{proj.id}}">{{proj.projectname}}</option> 
+            {% endifequal %}
           {% endfor %}
         </select>
       </div>
@@ -23,7 +27,11 @@
       <div class="col-md-2">
         <select id="user" name="user" class="form-control"> 
           {% for user in users %}
-            <option value="{{user.id}}">{{user.initials}}</option> 
+            {% ifequal params.user user.id %}
+              <option value="{{user.id}}">{{user.initials}}</option>
+            {% else %}
+              <option value="{{user.id}}">{{user.initials}}</option>
+            {% endifequal %}
           {% endfor %}
         </select>
       </div>
@@ -33,7 +41,7 @@
       <label class="col-md-4 control-label" for="textinput">Which day will you be bringing a treat?</label>
       <div class="col-md-2">
         <input type="text" class="form-control" id="date" name="date"
-          value="02-16-2012"></input>
+          value="{{params.date}}"></input>
       </div>
     </div>
 
@@ -41,7 +49,7 @@
       <label class="col-md-4 control-label" for="textarea">Comment (will be included in e-mail)</label>
       <div class="col-md-4">
         <textarea class="form-control" id="description"
-          name="description"></textarea>
+          name="description">{{params.description}}</textarea>
       </div>
     </div>
 
