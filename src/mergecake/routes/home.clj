@@ -102,4 +102,5 @@
   (GET "/list-projects" [] (list-projects-page))
   (GET "/projects/delete/:id" [id] (delete-project id))
   
-  (GET "/create-tables" [] (trigger-table-creation)))
+  (GET "/create-tables" [] (trigger-table-creation))
+  (GET "/reset-db" [] (db/reset-db)))

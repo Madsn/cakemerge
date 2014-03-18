@@ -1,7 +1,9 @@
 (ns mergecake.models.db
   (:use korma.core
         [korma.db :only (defdb)])
-  (:require [mergecake.models.schema :as schema]))
+  (:require [mergecake.models.schema :as schema]
+            [clojure.java.io :refer :all]
+            [clojure-csv.core]))
 
 (defdb db schema/db-spec)
 
@@ -13,6 +15,7 @@
 (defentity cakedays
   (belongs-to users {:fk :userid})
   (belongs-to projects {:fk :projectid}))
+
 
 ;; PROJECTS
 
@@ -111,3 +114,42 @@
 (defn delete-cakeday [id]
   (delete cakedays
           (where {:id id})))
+
+;; PRELOADING DATA
+
+(defn create-project-with-id [{:keys [id projectname]}]
+  (insert projects
+          (values {:id id
+                   :projectname projectname})))
+
+(defn parse-csv 
+  "https://github.com/mihi-tr/csv-map
+   parses a csv to a map
+   ([csv & {:as opts}])
+   passes options to clojure-csv
+   "
+  [csv columns & {:as opts}]
+  (let [opts (vec (reduce concat (vec opts)))
+        c (apply clojure-csv.core/parse-csv csv opts)]
+  (map (partial zipmap columns) (rest c))))
+
+(defn slurp-preload-file [filename]
+  (slurp (str (System/getProperty "user.dir") "/db/preload/" filename)))
+
+(defn load-users-from-file []
+  (doseq [line (parse-csv (slurp-preload-file "users.txt") [:uname :initials :proj])]
+    (create-user line)))
+
+(defn load-projects-from-file []
+  (doseq [line (parse-csv (slurp-preload-file "projects.txt") [:id :projectname])]
+    (create-project-with-id line)))
+
+(defn reset-db []
+  (do
+    (delete cakedays)
+    (delete users)
+    (delete projects)
+    (load-projects-from-file)
+    (load-users-from-file)
+    "DB reset completed"))
+    

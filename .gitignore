@@ -8,9 +8,10 @@ pom.xml
 /.lein-*
 /.env
 *.log
-db/
+db/*.db
 /bin
 .idea/
 .classpath
 .project
 mergecake.iml
+.nrepl-port
