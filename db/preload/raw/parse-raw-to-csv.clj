@@ -18,7 +18,7 @@
   (doseq [entry (clojure.string/split (slurp-file filename) #"</option>|<option value=\"\d+\">")]
     (if (empty? entry)
       ()
-      (create-project-from-string entry))))
+      (create-project-from-string (clojure.string/replace entry #"&amp;" "&")))))
 
 ;(parse-project-string-from-html-section "<option value=\"994455\">994455 Test Project æøå</option>")
 
