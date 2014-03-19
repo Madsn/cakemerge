@@ -44,7 +44,7 @@
     (sql/create-table
       :projects
       [:id "BIGINT auto_increment PRIMARY KEY"]
-      [:projectname "varchar(30)"])))
+      [:projectname "varchar(200)"])))
 
 (defn create-tables
   "creates the database tables used by the application"
