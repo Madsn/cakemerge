@@ -17,4 +17,4 @@
   (http-kit/run-server
     (if (dev? args) (reload/wrap-reload app) app)
     {:port (port args)})
-  (timbre/info "server started on port"))
+  (timbre/info (str "server started on port: " (port ""))))
