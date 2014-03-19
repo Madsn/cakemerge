@@ -12,6 +12,7 @@
    [korma "0.3.0-RC6"]
    [http-kit "2.1.13"]
    [selmer "0.6.1"]
+   [clojure-csv/clojure-csv "2.0.1"]
    [com.taoensso/tower "2.0.1"]
    [org.clojure/clojure "1.5.1"]
    [log4j
@@ -36,11 +37,11 @@
    {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.1"]],
     :env {:dev true}}}
   :url
-  "http://example.com/FIXME"
+  "None"
   :main
   mergecake.core
   :plugins
   [[lein-ring "0.8.10"] [lein-environ "0.4.0"]]
   :description
-  "FIXME: write description"
+  "Cakemerge - avoid conflicting cakedays"
   :min-lein-version "2.0.0")

@@ -3,7 +3,7 @@
         [korma.db :only (defdb)])
   (:require [mergecake.models.schema :as schema]
             [clojure.java.io :refer :all]
-            [clojure-csv.core]))
+            [clojure-csv.core :refer :all]))
 
 (defdb db schema/db-spec)
 
@@ -122,7 +122,7 @@
           (values {:id id
                    :projectname projectname})))
 
-(defn parse-csv 
+(defn parse-csv-to-map 
   "https://github.com/mihi-tr/csv-map
    parses a csv to a map
    ([csv & {:as opts}])
@@ -130,18 +130,18 @@
    "
   [csv columns & {:as opts}]
   (let [opts (vec (reduce concat (vec opts)))
-        c (apply clojure-csv.core/parse-csv csv opts)]
+        c (apply parse-csv csv opts)]
   (map (partial zipmap columns) (rest c))))
 
 (defn slurp-preload-file [filename]
   (slurp (str (System/getProperty "user.dir") "/db/preload/" filename)))
 
 (defn load-users-from-file []
-  (doseq [line (parse-csv (slurp-preload-file "users.txt") [:uname :initials :proj])]
+  (doseq [line (parse-csv-to-map (slurp-preload-file "users.txt") [:uname :initials :proj])]
     (create-user line)))
 
 (defn load-projects-from-file []
-  (doseq [line (parse-csv (slurp-preload-file "projects.txt") [:id :projectname])]
+  (doseq [line (parse-csv-to-map (slurp-preload-file "projects.txt") [:id :projectname])]
     (create-project-with-id line)))
 
 (defn reset-db []
