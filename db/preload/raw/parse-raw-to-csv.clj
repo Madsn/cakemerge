@@ -23,13 +23,19 @@
       ()
       (create-project-from-string (clojure.string/replace entry #"&amp;" "&")))))
 
+
+
+(defn create-user-from-string [userstr]
+  (let [splitstr (clojure.string/split userstr #",")]
+    (db/create-user {:initials (get splitstr 0) :uname (get splitstr 1)})))
+
 (defn load-users-from-file [filename]
   (with-open [rdr (io/reader (get-file filename))]
     (doseq [line (line-seq rdr)]
-      (println line))))
+      (create-user-from-string line))))
 
-(db/reset-db)
-;(schema/create-tables)
+;(db/reset-db)
+(schema/create-tables)
 
-;(load-projects-from-file "projects-from-dts.txt")
+(load-projects-from-file "projects-from-dts.txt")
 (load-users-from-file "initials-and-names-from-sharepoint.txt")

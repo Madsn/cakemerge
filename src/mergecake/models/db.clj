@@ -48,17 +48,15 @@
 
 ;; USERS
 
-(defn create-user [{:keys [uname initials proj]}]
+(defn create-user [{:keys [uname initials]}]
   (let [user {:name uname
-              :projectid proj
               :initials initials}]
     (insert users
             (values user))))
 
-(defn update-user [id uname initials proj]
+(defn update-user [id uname initials]
   (update users
           (set-fields {:name uname
-                       :projectid proj
                        :initials initials})
           (where {:id id})))
 
@@ -149,7 +147,7 @@
     (delete cakedays)
     (delete users)
     (delete projects)
-    (load-projects-from-file)
-    (load-users-from-file)
+    ;(load-projects-from-file)
+    ;(load-users-from-file)
     "DB reset completed"))
     

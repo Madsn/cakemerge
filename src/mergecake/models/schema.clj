@@ -23,9 +23,8 @@
     (sql/create-table
       :users
       [:id "BIGINT auto_increment PRIMARY KEY"]
-      [:projectid "BIGINT"]
-      [:name "varchar(30)"]
-      [:initials "varchar(6)"])))
+      [:name "varchar(100)"]
+      [:initials "varchar(30)"])))
 
 (defn create-cakedays-table
   []
