@@ -9,15 +9,7 @@
       <label class="col-md-4 control-label" for="project">Select
         project</label>
       <div class="col-md-4">
-        <select id="proj" name="proj" class="form-control"> 
-          {% for proj in projects %}
-            {% ifequal params.proj proj.id %}
-              <option value="{{proj.id}}" selected>{{proj.projectname}}</option> 
-            {% else %}
-              <option value="{{proj.id}}">{{proj.projectname}}</option> 
-            {% endifequal %}
-          {% endfor %}
-        </select>
+        <input type="text" class="form-control" id="project" name="project"/>
       </div>
     </div>
 
@@ -57,6 +49,34 @@
 {% script "/js/jquery-ui.js" %}
 {% script "/js/jquery.fuzzymatch.js" %}
 <script type="text/javascript">
+$(function() {
+	var projectList = [
+          {% for proj in projects %}
+                  "{{proj.projectname}}",
+          {% endfor %}
+
+	                   ];
+        $("#proj").autocomplete({
+                //source: nameList,
+                delay: 200,
+            source: function (context, callback) {
+                var results = $(
+                           projectList
+                ).filter(function (a) {
+                    // Only show items which match
+                   return $.fuzzyMatch(projectList[a], context.term).score;
+                }).sort(function (a, b) {
+                    // And sort them by matchiness.
+                    var score_a = $.fuzzyMatch(projectList[a], context.term).score,
+                        score_b = $.fuzzyMatch(projectList[b], context.term).score;
+
+                    return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
+                });
+
+                callback(results);
+            }
+        });
+}); 
 $(function() {
 	var nameList = [
              {% for user in users %}
