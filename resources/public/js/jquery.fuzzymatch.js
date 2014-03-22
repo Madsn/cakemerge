@@ -62,7 +62,7 @@
         PENALTY_NOT_COMPLETE = 0.99;
 
     /**
-     * Generates all possible split objects by splitting a string around a
+     * Generates all possible split objects by splitting a string around a 
      * character in as many ways as possible.
      *
      * @param string The string to split
@@ -142,6 +142,9 @@
      * }
     **/
     $.fuzzyMatch = function (string, abbreviation, cache) {
+    	if (string === undefined){
+    		return 0;
+    	}
         if (abbreviation === "") {
             return {
                 score: string === "" ? SCORE_CONTINUE_MATCH : PENALTY_NOT_COMPLETE,

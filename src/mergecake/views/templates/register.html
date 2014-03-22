@@ -8,7 +8,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="project">Select
         project</label>
-      <div class="col-md-2">
+      <div class="col-md-4">
         <select id="proj" name="proj" class="form-control"> 
           {% for proj in projects %}
             {% ifequal params.proj proj.id %}
@@ -24,7 +24,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="user">Select
         your initials</label>
-      <div class="col-md-2">
+      <div class="col-md-4">
         <input type="text" class="form-control" id="user" name="user"/>
       </div>
     </div>
@@ -55,29 +55,35 @@
 </form>
 {{message}}
 {% script "/js/jquery-ui.js" %}
-{% script "js/jquery.fuzzymatch.js" %}
+{% script "/js/jquery.fuzzymatch.js" %}
 <script type="text/javascript">
-             
-$("#user").autocomplete({
-    source: function (context, callback) {
-        callback($(
-        	   [	
+$(function() {
+	var nameList = [
              {% for user in users %}
-               "{{user.name}}",
+               "{{user.initials}} - {{user.name}}",
              {% endfor %}
-             ]
-        ).filter(function (a) {
-            // Only show items which match
-            return $.fuzzyMatch(a, context.term).score;
-        }).sort(function (a, b) {
-            // And sort them by matchiness.
-            var score_a = $.fuzzyMatch(a, context.term).score,
-                score_b = $.fuzzyMatch(b, context.term).score;
+                ];
 
-            return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
-        }));
-    },
-    delay: 0
+        $("#user").autocomplete({
+                //source: nameList,
+                delay: 200,
+            source: function (context, callback) {
+                var results = $(
+                           nameList
+                ).filter(function (a) {
+                    // Only show items which match
+                   return $.fuzzyMatch(nameList[a], context.term).score;
+                }).sort(function (a, b) {
+                    // And sort them by matchiness.
+                    var score_a = $.fuzzyMatch(nameList[a], context.term).score,
+                        score_b = $.fuzzyMatch(nameList[b], context.term).score;
+
+                    return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
+                });
+
+                callback(results);
+            }
+        });
 });
 </script>
 {% style "/css/datepicker.css" %}
