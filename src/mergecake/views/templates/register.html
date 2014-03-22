@@ -25,23 +25,14 @@
       <label class="col-md-4 control-label" for="user">Select
         your initials</label>
       <div class="col-md-2">
-        <select id="user" name="user" class="form-control"> 
-          {% for user in users %}
-            {% ifequal params.user user.id %}
-              <option value="{{user.id}}" selected>{{user.initials}}</option>
-            {% else %}
-              <option value="{{user.id}}">{{user.initials}}</option>
-            {% endifequal %}
-          {% endfor %}
-        </select>
+        <input type="text" class="form-control" id="user" name="user"/>
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Which day will you be bringing a treat?</label>
       <div class="col-md-2">
-        <input type="text" class="form-control" id="date" name="date"
-          value="{{params.date}}"></input>
+        <input type="text" class="form-control" id="date" name="date" value="{{params.date}}"></input>
       </div>
     </div>
 
@@ -63,6 +54,32 @@
   </fieldset>
 </form>
 {{message}}
+{% script "/js/jquery-ui.js" %}
+{% script "js/jquery.fuzzymatch.js" %}
+<script type="text/javascript">
+             
+$("#user").autocomplete({
+    source: function (context, callback) {
+        callback($(
+        	   [	
+             {% for user in users %}
+               "{{user.name}}",
+             {% endfor %}
+             ]
+        ).filter(function (a) {
+            // Only show items which match
+            return $.fuzzyMatch(a, context.term).score;
+        }).sort(function (a, b) {
+            // And sort them by matchiness.
+            var score_a = $.fuzzyMatch(a, context.term).score,
+                score_b = $.fuzzyMatch(b, context.term).score;
+
+            return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
+        }));
+    },
+    delay: 0
+});
+</script>
 {% style "/css/datepicker.css" %}
 {% script "/js/bootstrap-datepicker.js" %}
 <script type="text/javascript">
