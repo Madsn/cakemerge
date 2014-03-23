@@ -1,3 +1,0 @@
-projectname
-0, DIAS
-1, Spilkontrol

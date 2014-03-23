@@ -16,3 +16,5 @@ db/*.db
 mergecake.iml
 .nrepl-port
 db/preload/raw/*.txt
+db/preload/projects.txt
+db/preload/users.txt
