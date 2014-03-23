@@ -39,13 +39,12 @@
   (let [date (parse-date (get params :date))
         proj (get params :proj)
         description (get params :description)
-        userid (get params :user)
-        user (db/get-user userid)
+        user (db/get-user-with-initials (first (clojure.string/split (get params :user) #" - ")))
         projectname (get (db/get-project proj) :projectname)]
     (if (db/cakeday-taken? date proj)
       (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
       (do
-        (let [new-cakeday {:userid userid
+        (let [new-cakeday {:userid (get user :id)
                            :date date
                            :description description
                            :projectid proj}]
