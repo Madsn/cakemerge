@@ -140,7 +140,7 @@
   (slurp (str (System/getProperty "user.dir") "/db/preload/" filename)))
 
 (defn load-users-from-file []
-  (doseq [line (parse-csv-to-map (slurp-preload-file "users.txt") [:uname :initials :proj])]
+  (doseq [line (parse-csv-to-map (slurp-preload-file "users.txt") [:initials :uname])]
     (create-user line)))
 
 (defn load-projects-from-file []
@@ -152,7 +152,7 @@
     (delete cakedays)
     (delete users)
     (delete projects)
-    ;(load-projects-from-file)
-    ;(load-users-from-file)
+    (load-projects-from-file)
+    (load-users-from-file)
     "DB reset completed"))
     

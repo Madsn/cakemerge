@@ -8,7 +8,8 @@
             [taoensso.timbre.appenders.rotor :as rotor]
             [selmer.parser :as parser]
             [environ.core :refer [env]]
-            [mergecake.models.schema :as schema]))
+            [mergecake.models.schema :as schema]
+            [mergecake.models.db :as db]))
 
 (defroutes app-routes
   (route/resources "/")
@@ -33,7 +34,10 @@
     {:path "mergecake.log" :max-size (* 512 1024) :backlog 10})
   
   ;;initialize the database if needed
-  (if-not (schema/initialized?) (schema/create-tables))
+  (if-not (schema/initialized?) 
+    (do
+      (schema/create-tables)
+      (db/reset-db))
   
   (if (env :dev) (parser/cache-off!))
   (timbre/info "mergecake started successfully"))
