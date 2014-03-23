@@ -9,7 +9,8 @@
       <label class="col-md-4 control-label" for="project">Select
         project</label>
       <div class="col-md-4">
-        <input type="text" class="form-control" id="project" name="project"/>
+        <input type="text" class="form-control" id="proj" name="proj" 
+          value="{{params.proj}}" autocomplete="off"/>
       </div>
     </div>
 
@@ -48,63 +49,37 @@
 </form>
 {{message}}
 {% script "/js/jquery-ui.js" %}
-{% script "/js/jquery.fuzzymatch.js" %}
 <script type="text/javascript">
 $(function() {
 	var projectList = [
-          {% for proj in projects %}
-                  "{{proj.projectname}}",
-          {% endfor %}
-
-	                   ];
-        $("#proj").autocomplete({
-                //source: nameList,
-                delay: 200,
-            source: function (context, callback) {
-                var results = $(
-                           projectList
-                ).filter(function (a) {
-                    // Only show items which match
-                   return $.fuzzyMatch(projectList[a], context.term).score;
-                }).sort(function (a, b) {
-                    // And sort them by matchiness.
-                    var score_a = $.fuzzyMatch(projectList[a], context.term).score,
-                        score_b = $.fuzzyMatch(projectList[b], context.term).score;
-
-                    return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
-                });
-
-                callback(results);
-            }
-        });
+  {% for proj in projects %}
+  "{{proj.id}} - {{proj.projectname}}",
+  {% endfor %}
+  ];
+  $("#proj").autocomplete({
+  //source: nameList,
+    delay: 200,
+    source: function(request, response) {
+      var results = $.ui.autocomplete.filter(projectList, request.term);
+      response(results.slice(0,10));
+    }
+  });
 }); 
 $(function() {
 	var nameList = [
-             {% for user in users %}
-               "{{user.initials}} - {{user.name}}",
-             {% endfor %}
-                ];
+    {% for user in users %}
+    "{{user.initials}} - {{user.name}}",
+    {% endfor %}
+    ];
 
-        $("#user").autocomplete({
-                //source: nameList,
-                delay: 200,
-            source: function (context, callback) {
-                var results = $(
-                           nameList
-                ).filter(function (a) {
-                    // Only show items which match
-                   return $.fuzzyMatch(nameList[a], context.term).score;
-                }).sort(function (a, b) {
-                    // And sort them by matchiness.
-                    var score_a = $.fuzzyMatch(nameList[a], context.term).score,
-                        score_b = $.fuzzyMatch(nameList[b], context.term).score;
-
-                    return score_a < score_b ? -1 : score_a === score_b ? 0 : 1;
-                });
-
-                callback(results);
-            }
-        });
+  $("#user").autocomplete({
+    //source: nameList,
+    delay: 200,
+    source: function(request, response) {
+      var results = $.ui.autocomplete.filter(nameList, request.term);
+      response(results.slice(0,10));
+    }
+  });
 });
 </script>
 {% style "/css/datepicker.css" %}
