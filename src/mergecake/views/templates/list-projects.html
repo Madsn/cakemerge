@@ -2,6 +2,6 @@
 {% block content %}
   {{message}}
   {% for proj in projects %}
-    <p>{{proj.projectname}} <a href="/projects/delete/{{proj.id}}">Delete</a></p>
+    <p>{{proj.id}} - {{proj.projectname}} <a href="/projects/delete/{{proj.id}}">Delete</a></p>
   {% endfor %}
 {% endblock %}
