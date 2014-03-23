@@ -1,6 +1,8 @@
 {% extends "mergecake/views/templates/cakeday-base.html" %}
 {% block cakeday-content %}
+<div class="page-header">
 <h1>Register a cakeday</h1>
+</div>
 <form class="form-horizontal"
   action="{{servlet-context}}/submit-cakeday" method="POST">
   <fieldset>

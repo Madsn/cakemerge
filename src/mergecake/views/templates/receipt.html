@@ -1,39 +1,36 @@
 {% extends "mergecake/views/templates/cakeday-base.html" %} 
 {% block cakeday-content %}
-<h1>Receipt</h1>
-<p>Your request was accepted.</p>
+<div class="page-header">
+<h1>Your request was accepted</h1>
+</div>
 <div class="row">
-  <div class="col-md-2 control-label">
-    <p>Employee:
-    <p>
+  <div class="col-md-6 control-header">
+    <h3>
+      Receipt<br /> <small>The below info has also been e-mailed
+        to {{params.user.initials}}@systematic.com</small>
+    </h3>
   </div>
+</div>
+<div class="row">
+  <label class="col-md-2">Employee:</label>
   <div class="col-md-4">
     <p>{{params.user.initials}} - {{params.user.name}}</p>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-2 control-label">
-    <p>Project:
-    <p>
-  </div>
+  <label class="col-md-2 control-label">Project:</label>
   <div class="col-md-4">
     <p>{{params.cakeday.projectid}} - {{params.projectname}}</p>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-2 control-label">
-    <p>Date:
-    <p>
-  </div>
+  <label class="col-md-2 control-label">Date:</label>
   <div class="col-md-4">
     <p>{{params.cakeday.date}}
   </div>
 </div>
 <div class="row">
-  <div class="col-md-2 control-label">
-    <p>Comment:
-    <p>
-  </div>
+  <label class="col-md-2 control-label">Comment:</label>
   <div class="col-md-4">
     <p>{{params.cakeday.description}}
   </div>
