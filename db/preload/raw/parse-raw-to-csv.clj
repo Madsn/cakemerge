@@ -21,7 +21,8 @@
   (doseq [entry (clojure.string/split (slurp-file filename) #"</option>|<option value=\"\d+\">")]
     (if (empty? entry)
       ()
-      (create-project-from-string (clojure.string/replace entry #"&amp;" "&")))))
+      (create-project-from-string 
+        (clojure.string/replace (clojure.string/replace entry #"&amp;" "&") #"\r?\n" "")))))
 
 
 
@@ -35,8 +36,8 @@
     (doseq [line (line-seq rdr)]
       (create-user-from-string line))))
 
-;(db/reset-db)
-(schema/create-tables)
+(db/reset-db)
+;(schema/create-tables)
 
 (load-projects-from-file "projects-from-dts.txt")
 (load-users-from-file "initials-and-names-from-sharepoint.txt")
