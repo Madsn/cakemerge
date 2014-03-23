@@ -27,7 +27,8 @@
 
 (defn create-user-from-string [userstr]
   (let [splitstr (clojure.string/split userstr #",")]
-    (db/create-user {:initials (get splitstr 0) :uname (get splitstr 1)})))
+    (db/create-user {:initials (clojure.string/upper-case (get splitstr 0)) 
+                     :uname (get splitstr 1)})))
 
 (defn load-users-from-file [filename]
   (with-open [rdr (io/reader (get-file filename))]
