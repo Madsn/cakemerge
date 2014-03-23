@@ -15,3 +15,4 @@ db/*.db
 .project
 mergecake.iml
 .nrepl-port
+db/preload/raw/*.txt
