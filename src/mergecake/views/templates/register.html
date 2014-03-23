@@ -49,6 +49,7 @@
 </form>
 {{message}}
 {% script "/js/jquery-ui.js" %}
+{% style "/css/searchboxes.css" %}
 <script type="text/javascript">
 $(function() {
 	var projectList = [
@@ -59,6 +60,10 @@ $(function() {
   $("#proj").autocomplete({
   //source: nameList,
     delay: 200,
+    messages: {
+        noResults: '',
+        results: function() {}
+    },
     source: function(request, response) {
       var results = $.ui.autocomplete.filter(projectList, request.term);
       response(results.slice(0,10));
@@ -75,6 +80,10 @@ $(function() {
   $("#user").autocomplete({
     //source: nameList,
     delay: 200,
+    messages: {
+        noResults: '',
+        results: function() {}
+    },
     source: function(request, response) {
       var results = $.ui.autocomplete.filter(nameList, request.term);
       response(results.slice(0,10));
