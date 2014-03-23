@@ -8,40 +8,25 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="project">Select
         project</label>
-      <div class="col-md-2">
-        <select id="proj" name="proj" class="form-control"> 
-          {% for proj in projects %}
-            {% ifequal params.proj proj.id %}
-              <option value="{{proj.id}}" selected>{{proj.projectname}}</option> 
-            {% else %}
-              <option value="{{proj.id}}">{{proj.projectname}}</option> 
-            {% endifequal %}
-          {% endfor %}
-        </select>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="proj" name="proj" 
+          value="{{params.proj}}" autocomplete="off"/>
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-md-4 control-label" for="user">Select
         your initials</label>
-      <div class="col-md-2">
-        <select id="user" name="user" class="form-control"> 
-          {% for user in users %}
-            {% ifequal params.user user.id %}
-              <option value="{{user.id}}" selected>{{user.initials}}</option>
-            {% else %}
-              <option value="{{user.id}}">{{user.initials}}</option>
-            {% endifequal %}
-          {% endfor %}
-        </select>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="user" name="user" 
+          value="{{params.user}}" autocomplete="off"/>
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Which day will you be bringing a treat?</label>
       <div class="col-md-2">
-        <input type="text" class="form-control" id="date" name="date"
-          value="{{params.date}}"></input>
+        <input type="text" class="form-control" id="date" name="date" value="{{params.date}}"></input>
       </div>
     </div>
 
@@ -63,6 +48,49 @@
   </fieldset>
 </form>
 {{message}}
+{% script "/js/jquery-ui.js" %}
+{% style "/css/searchboxes.css" %}
+<script type="text/javascript">
+$(function() {
+	var projectList = [
+  {% for proj in projects %}
+  "{{proj.id}} - {{proj.projectname}}",
+  {% endfor %}
+  ];
+  $("#proj").autocomplete({
+  //source: nameList,
+    delay: 200,
+    messages: {
+        noResults: '',
+        results: function() {}
+    },
+    source: function(request, response) {
+      var results = $.ui.autocomplete.filter(projectList, request.term);
+      response(results.slice(0,10));
+    }
+  });
+}); 
+$(function() {
+	var nameList = [
+    {% for user in users %}
+    "{{user.initials}} - {{user.name}}",
+    {% endfor %}
+    ];
+
+  $("#user").autocomplete({
+    //source: nameList,
+    delay: 200,
+    messages: {
+        noResults: '',
+        results: function() {}
+    },
+    source: function(request, response) {
+      var results = $.ui.autocomplete.filter(nameList, request.term);
+      response(results.slice(0,10));
+    }
+  });
+});
+</script>
 {% style "/css/datepicker.css" %}
 {% script "/js/bootstrap-datepicker.js" %}
 <script type="text/javascript">

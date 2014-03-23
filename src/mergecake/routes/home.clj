@@ -37,18 +37,18 @@
 
 (defn submit-cakeday [params]
   (let [date (parse-date (get params :date))
-        proj (get params :proj)
+        proj (db/get-project (first (clojure.string/split (get params :proj) #" - ")))
         description (get params :description)
-        userid (get params :user)
-        user (db/get-user userid)
-        projectname (get (db/get-project proj) :projectname)]
-    (if (db/cakeday-taken? date proj)
+        user (db/get-user-with-initials (first (clojure.string/split (get params :user) #" - ")))
+        projectname (get proj :projectname)
+        projectid (get proj :id)]
+    (if (db/cakeday-taken? date projectid)
       (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
       (do
-        (let [new-cakeday {:userid userid
+        (let [new-cakeday {:userid (get user :id)
                            :date date
                            :description description
-                           :projectid proj}]
+                           :projectid projectid}]
           (db/create-cakeday new-cakeday)
           (render-cakeday-receipt {:user user
                                    :cakeday new-cakeday

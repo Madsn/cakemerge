@@ -65,6 +65,11 @@
                  (where {:id id})
                  (limit 1))))
 
+(defn get-user-with-initials [initials]
+  (first (select users
+                 (where {:initials initials})
+                 (limit 1))))
+
 (defn delete-user [id]
   (do
     (delete cakedays
