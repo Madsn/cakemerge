@@ -37,7 +37,7 @@
   (if-not (schema/initialized?) 
     (do
       (schema/create-tables)
-      (db/reset-db))
+      (db/reset-db)))
   
   (if (env :dev) (parser/cache-off!))
   (timbre/info "mergecake started successfully"))
