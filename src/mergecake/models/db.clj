@@ -134,7 +134,7 @@
   [csv columns & {:as opts}]
   (let [opts (vec (reduce concat (vec opts)))
         c (apply parse-csv csv opts)]
-  (map (partial zipmap columns) (rest c))))
+  (map (partial zipmap columns) c)))
 
 (defn slurp-preload-file [filename]
   (slurp (str (System/getProperty "user.dir") "/db/preload/" filename)))
