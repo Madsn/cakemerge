@@ -10,7 +10,7 @@
 
 (defn slurp-file [filename]
   (slurp 
-    (get-file filename)
+    (get-raw-file filename)
     :encoding "ISO-8859-1"))
 
 (defn append-to-projects-file [line]
@@ -31,8 +31,6 @@
                                    (clojure.string/replace entry #"&amp;" "&") 
                                    #"\r?\n" ""))))))
 
-;(db/reset-db)
-;(schema/create-tables)
-(println "go time")
-
+(println "starting conversion")
 (load-projects-from-file "projects-from-dts.txt")
+(println "Done")
