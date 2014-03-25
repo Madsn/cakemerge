@@ -36,6 +36,9 @@
 (defn parse-date [date]
   (.parse (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
 
+(defn format-date [date]
+  (.format (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
+
 (defn send-receipt [user cakeday projectname]
   (postal/send-message {:host "smtp.gmail.com"
                      :user "cakeportal@zpc.dk"
@@ -49,7 +52,7 @@
                              "<p>If you hadn't guessed already, the 'cake portal'"
                              " is an april fools joke for everybody in PS/INS.</p>"
                              "<p>You are of course still welcome to bring a treat for"
-                             " the " projectname " project on " (get cakeday :date)
+                             " the " projectname " project on " (format-date (get cakeday :date))
                              ". They would probably love that!</p>"
                              "<h3>Have a great day!</h3>")}]}))
 
@@ -68,9 +71,10 @@
                            :description description
                            :projectid projectid}]
           (db/create-cakeday new-cakeday)
-         (send-receipt user new-cakeday projectname)
+          (send-receipt user new-cakeday projectname)
           (render-cakeday-receipt {:user user
                                    :cakeday new-cakeday
+                                   :date (format-date date)
                                    :projectname projectname}))))))
 
 (defn submit-add-user [user]
