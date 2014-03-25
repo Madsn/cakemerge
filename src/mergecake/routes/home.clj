@@ -3,7 +3,8 @@
   (:require [mergecake.views.layout :as layout]
             [mergecake.util :as util]
             [mergecake.models.db :as db]
-            [mergecake.models.schema :as schema]))
+            [mergecake.models.schema :as schema]
+            [postal.core :as postal]))
 
 (defn trigger-table-creation []
   (schema/create-tables))
@@ -35,6 +36,23 @@
 (defn parse-date [date]
   (.parse (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
 
+(defn send-receipt [user cakeday projectname]
+  (postal/send-message {:host "smtp.gmail.com"
+                     :user "cakeportal@zpc.dk"
+                     :pass "CENSORED"
+                     :ssl :yes}
+                    {:from "Cake Portal <cakeportal@zpc.dk>" 
+                     :to (str (get user :initials) "@systematic.com")
+                     :subject "Receipt for your cakeday registration" 
+                     :body [{:type "text/html" 
+                             :content (str "<h1>April fools!</h1>"
+                             "<p>If you hadn't guessed already, the 'cake portal'"
+                             " is an april fools joke for everybody in PS/INS.</p>"
+                             "<p>You are of course still welcome to bring a treat for"
+                             " the " projectname " project on " (get cakeday :date)
+                             ". They would probably love that!</p>"
+                             "<h3>Have a great day!</h3>")}]}))
+
 (defn submit-cakeday [params]
   (let [date (parse-date (get params :date))
         proj (db/get-project (first (clojure.string/split (get params :proj) #" - ")))
@@ -50,6 +68,7 @@
                            :description description
                            :projectid projectid}]
           (db/create-cakeday new-cakeday)
+         (send-receipt user new-cakeday projectname)
           (render-cakeday-receipt {:user user
                                    :cakeday new-cakeday
                                    :projectname projectname}))))))
@@ -85,6 +104,7 @@
   (do
     (db/delete-project id)
     (list-projects-page)))
+
 
 (defroutes home-routes
   (GET "/" [] (render-register-cakeday))

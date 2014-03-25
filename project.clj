@@ -23,7 +23,8 @@
      com.sun.jdmk/jmxtools
      com.sun.jmx/jmxri]]
    [lib-noir "0.8.1"]
-   [compojure "1.1.6"]]
+   [compojure "1.1.6"]
+   [com.draines/postal "1.11.1"]]
   :ring
   {:handler mergecake.handler/app,
    :init mergecake.handler/init,
