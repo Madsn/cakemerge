@@ -4,7 +4,8 @@
             [mergecake.util :as util]
             [mergecake.models.db :as db]
             [mergecake.models.schema :as schema]
-            [postal.core :as postal]))
+            [postal.core :as postal]
+            [compojure.route :refer [files]]))
 
 (defn trigger-table-creation []
   (schema/create-tables))
@@ -127,4 +128,5 @@
   (GET "/projects/delete/:id" [id] (delete-project id))
   
   (GET "/create-tables" [] (trigger-table-creation))
-  (GET "/reset-db" [] (db/reset-db)))
+  (GET "/reset-db" [] (db/reset-db))
+  (files "/"))
