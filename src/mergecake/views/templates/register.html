@@ -12,24 +12,44 @@
         project</label>
       <div class="col-md-4">
         <input type="text" class="form-control" id="proj" name="proj" 
-          value="{{params.proj}}" autocomplete="off"/>
+          value="{{params.proj}}" autocomplete="off" placeholder="Start typing project name or number"/>
       </div>
+      {% if error.invalidproject %}
+      <div class="col-md-4 error">
+        <p>* Please enter a valid project</p>
+      </div>
+      {% endif %}
     </div>
 
     <div class="form-group">
-      <label class="col-md-4 control-label" for="user">Select
-        your initials</label>
+      <label class="col-md-4 control-label" for="user">Select your name</label>
       <div class="col-md-4">
         <input type="text" class="form-control" id="user" name="user" 
-          value="{{params.user}}" autocomplete="off"/>
+          value="{{params.user}}" autocomplete="off" placeholder="Start typing name or initials"/>
       </div>
+      {% if error.invaliduser %}
+      <div class="col-md-4 error">
+        <p>* Please enter a valid user</p>
+      </div>
+      {% endif %}
     </div>
 
     <div class="form-group">
       <label class="col-md-4 control-label" for="textinput">Which day will you be bringing a treat?</label>
       <div class="col-md-2">
-        <input type="text" class="form-control" id="date" name="date" value="{{params.date}}"></input>
+        <input type="text" class="form-control" id="date" name="date" 
+          value="{{params.date}}" placeholder="dd-mm-yyyy"></input>
       </div>
+      {% if error.invaliddate %}
+      <div class="col-md-4 error">
+        <p>* Please enter a valid date</p>
+      </div>
+      {% endif %}
+      {% if error.dateconflict %}
+      <div class="col-md-4 error">
+        <p>* The chosen cakeday, {{params.date}}, is already taken.</p>
+      </div>
+      {% endif %}
     </div>
 
     <div class="form-group">

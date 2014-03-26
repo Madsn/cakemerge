@@ -23,13 +23,13 @@
 
 (defn render-register-cakeday
   ([] (render-register-cakeday "" []))
-  ([message] (render-register-cakeday message []))
-  ([message params]
+  ([params] (render-register-cakeday params []))
+  ([params error]
     (layout/render "register.html"
-                   {:message message,
-                    :users (db/get-all-users),
+                   {:users (db/get-all-users)
                     :projects (db/get-all-projects)
-                    :params params})))
+                    :params params
+                    :error error})))
 
 (defn render-cakeday-receipt [params]
   (layout/render "receipt.html" {:params params}))
@@ -43,7 +43,7 @@
 (defn send-receipt [user cakeday projectname]
   (postal/send-message {:host "smtp.gmail.com"
                      :user "cakeportal@zpc.dk"
-                     :pass "CENSORED"
+                     :pass "aprilfools123"
                      :ssl :yes}
                     {:from "Cake Portal <cakeportal@zpc.dk>" 
                      :to (str (get user :initials) "@systematic.com")
@@ -65,7 +65,7 @@
         projectname (get proj :projectname)
         projectid (get proj :id)]
     (if (db/cakeday-taken? date projectid)
-      (render-register-cakeday "Sorry, there was a conflict. Choose another day." params)
+      (render-register-cakeday params {:dateconflict true})
       (do
         (let [new-cakeday {:userid (get user :id)
                            :date date
@@ -77,6 +77,21 @@
                                    :cakeday new-cakeday
                                    :date (format-date date)
                                    :projectname projectname}))))))
+
+(defn render-cakeday-errors [params]
+  (let [invaliddate (empty? (get params :date))
+        invaliduser (empty? (get params :user))
+        invalidproject (empty? (get params :proj))]
+    (render-register-cakeday params {:invaliddate invaliddate
+                                     :invaliduser invaliduser
+                                     :invalidproject invalidproject})))
+
+(defn check-cakeday-input [params]
+  (if (and (not (empty? (get params :proj)))
+           (not (empty? (get params :user)))
+           (not (empty? (get params :date))))
+    (submit-cakeday params)
+    (render-cakeday-errors params)))
 
 (defn submit-add-user [user]
   (do
@@ -113,7 +128,7 @@
 
 (defroutes home-routes
   (GET "/" [] (render-register-cakeday))
-  (POST "/submit-cakeday" {params :params} (submit-cakeday params))
+  (POST "/submit-cakeday" {params :params} (check-cakeday-input params))
   (GET "/list-cakedays" [] (list-cakedays-page))
   (GET "/cakedays/delete/:id" [id] (delete-cakeday id))
   

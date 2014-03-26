@@ -4,3 +4,8 @@ body {
     height: 100%;
     padding-top: 40px;
 }
+
+.error {
+	padding-top: 7px;
+	color: red;
+}
