@@ -69,8 +69,12 @@ $(function() {
     source: function(request, response) {
       var results = $.ui.autocomplete.filter(projectList, request.term);
       response(results.slice(0,10));
-    }
-  });
+    },
+    change: function (event, ui) {
+        if (!ui.item) {
+             $(this).val('');
+         }
+    }});
 }); 
 $(function() {
 	var nameList = [
@@ -89,8 +93,12 @@ $(function() {
     source: function(request, response) {
       var results = $.ui.autocomplete.filter(nameList, request.term);
       response(results.slice(0,10));
-    }
-  });
+    },
+    change: function (event, ui) {
+        if (!ui.item) {
+             $(this).val('');
+         }
+    }});
 });
 </script>
 {% style "/css/datepicker.css" %}
