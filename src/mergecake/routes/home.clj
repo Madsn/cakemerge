@@ -78,20 +78,17 @@
                                    :date (format-date date)
                                    :projectname projectname}))))))
 
-(defn render-cakeday-errors [params]
+(defn check-cakeday-input [params]
   (let [invaliddate (empty? (get params :date))
         invaliduser (empty? (get params :user))
         invalidproject (empty? (get params :proj))]
+  (if (or invaliddate
+          invaliduser
+          invalidproject)
     (render-register-cakeday params {:invaliddate invaliddate
                                      :invaliduser invaliduser
-                                     :invalidproject invalidproject})))
-
-(defn check-cakeday-input [params]
-  (if (and (not (empty? (get params :proj)))
-           (not (empty? (get params :user)))
-           (not (empty? (get params :date))))
-    (submit-cakeday params)
-    (render-cakeday-errors params)))
+                                     :invalidproject invalidproject})
+    (submit-cakeday params))))
 
 (defn submit-add-user [user]
   (do
@@ -143,5 +140,4 @@
   (GET "/projects/delete/:id" [id] (delete-project id))
   
   (GET "/create-tables" [] (trigger-table-creation))
-  (GET "/reset-db" [] (db/reset-db))
-  (files "/"))
+  (GET "/reset-db" [] (db/reset-db)))
