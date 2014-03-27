@@ -41,12 +41,10 @@
   (.format (java.text.SimpleDateFormat. "dd-MM-yyyy") date))
 
 (defn send-receipt [user cakeday projectname]
-  (postal/send-message {:host "smtp.gmail.com"
-                     :user "cakeportal@zpc.dk"
-                     :pass "aprilfools123"
-                     :ssl :yes}
-                    {:from "Cake Portal <cakeportal@zpc.dk>" 
+  (postal/send-message {:host "mailhost"}
+                    {:from "Cake Portal <cakeportal@systematic.com>" 
                      :to (str (get user :initials) "@systematic.com")
+					 :cc "mikma@systematic.com"
                      :subject "Receipt for your cakeday registration" 
                      :body [{:type "text/html" 
                              :content (str "<h1>April fools!</h1>"
