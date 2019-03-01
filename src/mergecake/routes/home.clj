@@ -70,7 +70,7 @@
                            :description description
                            :projectid projectid}]
           (db/create-cakeday new-cakeday)
-          (send-receipt user new-cakeday projectname)
+          (comment <requires proper setup> send-receipt user new-cakeday projectname)
           (render-cakeday-receipt {:user user
                                    :cakeday new-cakeday
                                    :date (format-date date)
