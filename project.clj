@@ -42,7 +42,7 @@
   :main
   mergecake.core
   :plugins
-  [[lein-ring "0.8.10"] [lein-environ "0.4.0"]]
+  [[lein-ring "0.12.5"] [lein-environ "0.4.0"]]
   :description
   "Cakemerge - avoid conflicting cakedays"
   :min-lein-version "2.0.0")
