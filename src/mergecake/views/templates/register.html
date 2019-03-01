@@ -127,7 +127,10 @@ $(function() {
 	$(function() {
 		$('#date').datepicker({
 			format : 'dd-mm-yyyy'
-		});
+    });
+    $('#date').on('changeDate', function(ev){
+      $(this).datepicker('hide');
+    });
 	});
 </script>
 {% endblock %}
